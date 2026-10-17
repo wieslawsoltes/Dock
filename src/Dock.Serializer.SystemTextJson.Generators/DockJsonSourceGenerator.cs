@@ -238,20 +238,31 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
 
             registeredTypes = FilterRegisteredTypes(registeredTypes, dockSymbols!, diagnostics);
 
+            bool explicitActivation = HasAssemblyAttribute(compilation, MetadataNames.SourceGenerationAttribute);
+
             // Referenced models contribute contracts only after this assembly has a
             // local reason to generate. Otherwise a transitive consumer repeats its
             // library's internal helpers (and conflicts when InternalsVisibleTo is used).
             if (registeredTypes.IsEmpty
-                && !HasAssemblyAttribute(compilation, MetadataNames.SourceGenerationAttribute)
+                && !explicitActivation
                 && !EnumerateNamedTypes(compilation.Assembly.GlobalNamespace, cancellationToken)
                     .Any(type => IsDiscoverableDockType(type, dockSymbols!, compilation.Assembly))
-                && !GetSerializerCallTypes(compilation).Any())
+                && !GetSerializerCallTypes(compilation, requireClosedAccessibleType: false).Any())
             {
                 return GenerationModel.Empty(diagnostics.ToImmutable());
             }
 
             ImmutableArray<SerializableTypeModel> serializableTypes =
                 GetSerializableTypes(compilation, dockSymbols!, registeredTypes, cancellationToken);
+
+            // An open generic wrapper needs metadata only when there are concrete
+            // contracts to register. Preserve the empty-contract guard for serializer
+            // infrastructure that merely forwards generic calls.
+            if (serializableTypes.IsEmpty && !explicitActivation
+                && !GetSerializerCallTypes(compilation).Any())
+            {
+                return GenerationModel.Empty(diagnostics.ToImmutable());
+            }
 
             ImmutableArray<ITypeSymbol> collectionTypes = GetCollectionTypes(serializableTypes, dockSymbols!, compilation);
             ImmutableArray<IgnoredMembersModel> ignoredMembers =
@@ -781,7 +792,9 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
             return null;
         }
 
-        private static IEnumerable<ITypeSymbol> GetSerializerCallTypes(Compilation compilation)
+        private static IEnumerable<ITypeSymbol> GetSerializerCallTypes(
+            Compilation compilation,
+            bool requireClosedAccessibleType = true)
         {
             foreach (SyntaxTree tree in compilation.SyntaxTrees)
             {
@@ -792,7 +805,7 @@ public sealed partial class DockJsonSourceGenerator : IIncrementalGenerator
                         && method.TypeArguments.Length == 1
                         && method.Name is "Serialize" or "Deserialize" or "Save" or "Load"
                         && method.ContainingType.ToDisplayString().StartsWith("Dock.", StringComparison.Ordinal)
-                        && IsClosedAccessibleType(method.TypeArguments[0], compilation.Assembly))
+                        && (!requireClosedAccessibleType || IsClosedAccessibleType(method.TypeArguments[0], compilation.Assembly)))
                         yield return method.TypeArguments[0];
                 }
             }

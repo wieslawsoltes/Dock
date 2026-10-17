@@ -262,6 +262,26 @@ public class DockJsonSourceGeneratorTests
     }
 
     [Fact]
+    public void GenericWrapperWithoutKnownContracts_DoesNotGenerateEmptyMetadata()
+    {
+        CSharpCompilation compilation = CreateCompilation("Wrapper", """
+            public static class Wrapper
+            {
+                public static string Save<T>(T value) => new Dock.Serializer.SystemTextJson.DockSerializer().Serialize(value);
+            }
+            """);
+        compilation = compilation.RemoveReferences(compilation.References.Where(reference =>
+            compilation.GetAssemblyOrModuleSymbol(reference) is IAssemblySymbol assembly
+            && assembly.Name.StartsWith("Dock.Model.", StringComparison.Ordinal)).ToArray());
+
+        CompilationRun run = Run(compilation);
+
+        Assert.Empty(Assert.Single(run.RunResult.Results).GeneratedSources);
+        Assert.Empty(run.RunResult.Diagnostics);
+        AssertCompilesWithoutTypeConflicts(run.OutputCompilation);
+    }
+
+    [Fact]
     public void FriendLibrary_DoesNotGenerateDuplicateMetadataInReferencingApplication()
     {
         CompilationRun library = Run(CreateCompilation("Lib", """
@@ -291,6 +311,7 @@ public class DockJsonSourceGeneratorTests
     [InlineData("[assembly: Dock.Serializer.SystemTextJson.DockJsonSourceGeneration]")]
     [InlineData("[assembly: Dock.Serializer.SystemTextJson.DockJsonSerializable(typeof(Lib.Note))]")]
     [InlineData("public static class Usage { public static string Save(Lib.Note note) => new Dock.Serializer.SystemTextJson.DockSerializer().Serialize(note); }")]
+    [InlineData("public static class Usage { public static string Save<T>(T value) => new Dock.Serializer.SystemTextJson.DockSerializer().Serialize(value); }")]
     public void LocalGenerationTriggers_StillIncludeReferencedDockModels(string source)
     {
         MetadataReference library = EmitReference(CreateCompilation("Dock.Model.Library", """

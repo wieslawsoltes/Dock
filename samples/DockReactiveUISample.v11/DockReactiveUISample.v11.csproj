@@ -16,10 +16,10 @@
   <Import Project="..\..\build\ReferenceAssemblies.props" />
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" VersionOverride="$(Avalonia11Version)" />
-    <PackageReference Include="Avalonia.Desktop" VersionOverride="$(Avalonia11Version)" />
-    <PackageReference Include="Avalonia.Fonts.Inter" VersionOverride="$(Avalonia11Version)" />
-    <PackageReference Include="Avalonia.Themes.Fluent" VersionOverride="$(Avalonia11Version)" />
+    <PackageReference Include="Avalonia" VersionOverride="$(Avalonia11ReactiveUIVersion)" />
+    <PackageReference Include="Avalonia.Desktop" VersionOverride="$(Avalonia11ReactiveUIVersion)" />
+    <PackageReference Include="Avalonia.Fonts.Inter" VersionOverride="$(Avalonia11ReactiveUIVersion)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" VersionOverride="$(Avalonia11ReactiveUIVersion)" />
     <PackageReference Include="ReactiveUI.Avalonia" VersionOverride="$(ReactiveUIAvalonia11Version)" />
     <PackageReference Include="ReactiveUI" VersionOverride="$(ReactiveUI23Version)" />
     <PackageReference Include="System.Reactive" VersionOverride="$(SystemReactive6Version)" />

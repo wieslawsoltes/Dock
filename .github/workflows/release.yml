@@ -62,6 +62,7 @@ jobs:
         path: |
           artifacts/nuget/*.nupkg
           artifacts/nuget/*.snupkg
+          ${{ startsWith(github.ref_name, 'v12.') && '!artifacts/nuget/*.v11.*' || '' }}
 
   artifacts:
     runs-on: ubuntu-latest

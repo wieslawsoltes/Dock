@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AvaloniaVersion>12.1.4</AvaloniaVersion>
+    <AvaloniaVersion>12.1.5</AvaloniaVersion>
     <Avalonia11Version>11.3.12</Avalonia11Version>
     <Avalonia11ReactiveUIVersion>11.3.22</Avalonia11ReactiveUIVersion>
     <ReactiveUIAvalonia11Version>11.4.13</ReactiveUIAvalonia11Version>

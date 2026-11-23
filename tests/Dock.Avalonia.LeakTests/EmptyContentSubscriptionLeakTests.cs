@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Themes.Fluent;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Themes.Fluent;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
@@ -28,7 +28,12 @@ public class EmptyContentSubscriptionLeakTests
             var firstDock = CreateDocumentDock(DocumentLayoutMode.Tabbed, firstCollection);
             var secondDock = CreateDocumentDock(DocumentLayoutMode.Tabbed, secondCollection);
 
-            var control = new DocumentControl { DataContext = firstDock };
+            var control = new DocumentControl
+            {
+                DataContext = firstDock,
+                // Isolate the dock control's subscription from the items controls in its theme.
+                Template = new FuncControlTemplate((_, _) => new Border())
+            };
             var window = new Window
             {
                 Width = 640,
@@ -36,7 +41,6 @@ public class EmptyContentSubscriptionLeakTests
                 Content = control
             };
             window.Styles.Add(new FluentTheme());
-            window.Styles.Add(new DockFluentTheme());
 
             ShowWindow(window);
             control.ApplyTemplate();
@@ -98,7 +102,11 @@ public class EmptyContentSubscriptionLeakTests
             var firstDock = CreateDocumentDock(DocumentLayoutMode.Mdi, firstCollection);
             var secondDock = CreateDocumentDock(DocumentLayoutMode.Mdi, secondCollection);
 
-            var control = new MdiDocumentControl { DataContext = firstDock };
+            var control = new MdiDocumentControl
+            {
+                DataContext = firstDock,
+                Template = new FuncControlTemplate((_, _) => new Border())
+            };
             var window = new Window
             {
                 Width = 640,
@@ -106,7 +114,6 @@ public class EmptyContentSubscriptionLeakTests
                 Content = control
             };
             window.Styles.Add(new FluentTheme());
-            window.Styles.Add(new DockFluentTheme());
 
             ShowWindow(window);
             control.ApplyTemplate();

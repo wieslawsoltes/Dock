@@ -27,6 +27,20 @@ Run `dotnet format` if you have it installed to ensure consistent formatting.
 
 Run `dotnet test` from the repository root to execute all unit tests. You can also use `./build.sh` (or `build.cmd` on Windows) to restore, build and test the entire solution.
 
+## Releasing packages
+
+Run the **Release** workflow on `master` to validate a release and download its
+package artifacts. A manual run builds, tests, and packs the solution.
+
+To publish, push a `v`-prefixed version tag from `master`. The tag starts the
+NuGet.org publish job in the `nuget` GitHub environment. GitHub creates the
+release after the package and symbol uploads succeed.
+
+The `nuget` environment supplies `NUGET_USER`, the NuGet.org profile that owns
+the packages. On NuGet.org, configure its Trusted Publishing policy with
+repository owner `wieslawsoltes`, repository `Dock`, workflow `release.yml`,
+environment `nuget`, and a `Dock.*` push scope.
+
 ## Branching model
 
 The `master` branch contains the latest stable code. Feature work should happen in separate branches. Avoid committing directly to `master` in your fork.

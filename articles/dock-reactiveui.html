@@ -89,12 +89,15 @@ commands are implemented using <code>ReactiveCommand</code>. The sample project
 <code>DockReactiveUISample</code> demonstrates these concepts in a working application. For
 interface details refer to the <a href="dock-reference.html">Dock API Reference</a> and see
 the <a href="dock-advanced.html">Advanced Guide</a> for more customization options.</p>
-<h2 id="reactiveui-24-distribution">ReactiveUI 24 distribution</h2>
+<h2 id="reactiveui-packages">ReactiveUI packages</h2>
 <p>The samples and recommended setup use the System.Reactive-compatible package
 family. Install <code>ReactiveUI.Reactive</code>, <code>ReactiveUI.Avalonia.Reactive</code>, and the
 matching <code>Dock.Model.ReactiveUI.Reactive</code> packages together. This distribution
 exposes <code>System.Reactive.Unit</code>, <code>System.Reactive.Concurrency.IScheduler</code>, and
 System.Reactive subjects at ReactiveUI's public boundary.</p>
+<p>On .NET 10, Dock 12.2 uses ReactiveUI 28.0.0 and the ReactiveUI.Avalonia 12.1.9
+integration. For .NET 8 and .NET 9, use ReactiveUI 26.0.1 and the Avalonia
+integration version 12.1.6. These versions apply to both package families.</p>
 <p>Do not combine these packages with the unsuffixed <code>ReactiveUI</code>,
 <code>ReactiveUI.Avalonia</code>, or <code>Dock.Model.ReactiveUI</code> packages. The unsuffixed family
 is the optional ReactiveUI.Primitives lane and has distinct type identities.</p>
@@ -115,8 +118,9 @@ dotnet add package Dock.Model.ReactiveUI.Reactive
 dotnet add package Dock.Avalonia.Themes.Fluent
 dotnet add package ReactiveUI.Avalonia.Reactive
 </code></pre>
-<p>ReactiveUI 24 must be initialized by the Avalonia application builder. Update
-<code>Program.cs</code> to import <code>ReactiveUI.Avalonia.Reactive</code> and call <code>UseReactiveUI</code>:</p>
+<p>When targeting .NET 8 or .NET 9, specify <code>--version 12.1.6</code> when adding
+<code>ReactiveUI.Avalonia.Reactive</code>. Initialize ReactiveUI in <code>Program.cs</code> by
+importing <code>ReactiveUI.Avalonia.Reactive</code> and calling <code>UseReactiveUI</code>:</p>
 <pre><code class="lang-csharp">using System;
 using Avalonia;
 using ReactiveUI.Avalonia.Reactive;

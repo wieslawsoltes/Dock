@@ -7,13 +7,17 @@ commands are implemented using `ReactiveCommand`. The sample project
 interface details refer to the [Dock API Reference](dock-reference.md) and see
 the [Advanced Guide](dock-advanced.md) for more customization options.
 
-## ReactiveUI 24 distribution
+## ReactiveUI packages
 
 The samples and recommended setup use the System.Reactive-compatible package
 family. Install `ReactiveUI.Reactive`, `ReactiveUI.Avalonia.Reactive`, and the
 matching `Dock.Model.ReactiveUI.Reactive` packages together. This distribution
 exposes `System.Reactive.Unit`, `System.Reactive.Concurrency.IScheduler`, and
 System.Reactive subjects at ReactiveUI's public boundary.
+
+On .NET 10, Dock 12.2 uses ReactiveUI 28.0.0 and the ReactiveUI.Avalonia 12.1.9
+integration. For .NET 8 and .NET 9, use ReactiveUI 26.0.1 and the Avalonia
+integration version 12.1.6. These versions apply to both package families.
 
 Do not combine these packages with the unsuffixed `ReactiveUI`,
 `ReactiveUI.Avalonia`, or `Dock.Model.ReactiveUI` packages. The unsuffixed family
@@ -41,8 +45,9 @@ Follow these instructions to create a minimal ReactiveUI based application using
    dotnet add package ReactiveUI.Avalonia.Reactive
    ```
 
-   ReactiveUI 24 must be initialized by the Avalonia application builder. Update
-   `Program.cs` to import `ReactiveUI.Avalonia.Reactive` and call `UseReactiveUI`:
+   When targeting .NET 8 or .NET 9, specify `--version 12.1.6` when adding
+   `ReactiveUI.Avalonia.Reactive`. Initialize ReactiveUI in `Program.cs` by
+   importing `ReactiveUI.Avalonia.Reactive` and calling `UseReactiveUI`:
 
    ```csharp
    using System;

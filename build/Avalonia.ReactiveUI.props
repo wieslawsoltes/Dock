@@ -7,5 +7,6 @@
   <ItemGroup>
     <Using Include="ReactiveUI.Reactive" />
     <Using Include="ReactiveUI.Avalonia.Reactive" />
+    <Using Include="ReactiveUI.Binding.Reactive" />
   </ItemGroup>
 </Project>

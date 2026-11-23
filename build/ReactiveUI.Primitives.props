@@ -4,4 +4,7 @@
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="System.Reactive" />
   </ItemGroup>
+  <ItemGroup>
+    <Using Include="ReactiveUI.Binding" />
+  </ItemGroup>
 </Project>

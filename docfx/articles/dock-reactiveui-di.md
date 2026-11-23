@@ -167,6 +167,7 @@ Follow these instructions to create a ReactiveUI application with dependency inj
    ```csharp
    using System.Reactive.Disposables;
    using ReactiveUI;
+   using ReactiveUI.Binding;
    using Dock.Model.ReactiveUI.Controls;
    using MyDockApp.Models;
 

@@ -12,6 +12,7 @@ using Dock.Model.ReactiveUI.Navigation.ViewModels;
 using Dock.Model.ReactiveUI.Services.Avalonia.Controls;
 using DockReactiveUIDiSample.ViewModels.Documents;
 using DockReactiveUIDiSample.Views.Documents;
+using ReactiveUI.Binding.Reactive;
 using ReactiveUI.Reactive;
 using Xunit;
 

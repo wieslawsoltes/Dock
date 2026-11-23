@@ -852,6 +852,10 @@ public class DeferredContentControlTests
             DeferredContentPresentationQueue.FlushPendingBatchForTesting();
 
             Assert.Equal(1, firstReady.SuccessfulApplyCount);
+
+            // A preempted UI thread may exhaust this pass before processing the second item.
+            DeferredContentPresentationQueue.FlushPendingBatchForTesting();
+
             Assert.Equal(1, secondReady.SuccessfulApplyCount);
             Assert.Equal(0, DeferredContentPresentationQueue.PendingCount);
         }

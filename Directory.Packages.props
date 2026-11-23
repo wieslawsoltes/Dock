@@ -1,13 +1,22 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AvaloniaVersion>12.1.5</AvaloniaVersion>
+    <AvaloniaVersion>12.2.0</AvaloniaVersion>
+    <ReactiveUIVersion>28.0.0</ReactiveUIVersion>
+    <ReactiveUIAvaloniaVersion>12.1.9</ReactiveUIAvaloniaVersion>
+    <ReactiveUISourceGeneratorsVersion>7.1.0</ReactiveUISourceGeneratorsVersion>
     <Avalonia11Version>11.3.12</Avalonia11Version>
     <Avalonia11ReactiveUIVersion>11.3.22</Avalonia11ReactiveUIVersion>
     <ReactiveUIAvalonia11Version>11.4.13</ReactiveUIAvalonia11Version>
     <ReactiveUI23Version>23.2.28</ReactiveUI23Version>
     <ReactiveUISourceGenerators2Version>2.6.1</ReactiveUISourceGenerators2Version>
     <SystemReactive6Version>6.1.0</SystemReactive6Version>
+  </PropertyGroup>
+  <!-- The newer ReactiveUI and Avalonia integration packages require .NET 10 or later. -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
+    <ReactiveUIVersion>26.0.1</ReactiveUIVersion>
+    <ReactiveUIAvaloniaVersion>12.1.6</ReactiveUIAvaloniaVersion>
+    <ReactiveUISourceGeneratorsVersion>4.2.0</ReactiveUISourceGeneratorsVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
@@ -24,12 +33,12 @@
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
     <PackageVersion Include="AvaloniaEdit.TextMate" Version="12.0.0" />
-    <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.6" />
-    <PackageVersion Include="ReactiveUI.Avalonia.Reactive" Version="12.1.6" />
-    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="4.2.0" />
+    <PackageVersion Include="ReactiveUI.Avalonia" Version="$(ReactiveUIAvaloniaVersion)" />
+    <PackageVersion Include="ReactiveUI.Avalonia.Reactive" Version="$(ReactiveUIAvaloniaVersion)" />
+    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="$(ReactiveUISourceGeneratorsVersion)" />
     <PackageVersion Include="StaticViewLocator" Version="0.1.0" />
-    <PackageVersion Include="ReactiveUI" Version="26.0.1" />
-    <PackageVersion Include="ReactiveUI.Reactive" Version="26.0.1" />
+    <PackageVersion Include="ReactiveUI" Version="$(ReactiveUIVersion)" />
+    <PackageVersion Include="ReactiveUI.Reactive" Version="$(ReactiveUIVersion)" />
     <PackageVersion Include="System.Reactive" Version="7.0.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />

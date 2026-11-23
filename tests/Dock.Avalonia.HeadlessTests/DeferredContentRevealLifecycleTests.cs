@@ -1,6 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
@@ -35,11 +36,20 @@ public class DeferredContentRevealLifecycleTests
         DeferredContentControl host = CreateHost(standardPresenter);
         Window window = CreateWindow(host, TimeSpan.FromMilliseconds(300));
         IDisposable? binding = null;
+        ContentPresenter? presenter = null;
+        List<double> opacityChanges = new();
+
+        void RecordOpacity(object? sender, AvaloniaPropertyChangedEventArgs change)
+        {
+            if (change.Property == Visual.OpacityProperty)
+                opacityChanges.Add(change.GetNewValue<double>());
+        }
+
         try
         {
             window.Show();
             Flush(window);
-            ContentPresenter presenter = Assert.IsAssignableFrom<ContentPresenter>(host.Presenter);
+            presenter = Assert.IsAssignableFrom<ContentPresenter>(host.Presenter);
             double opacity = opacitySource == 0 ? 1D : 0.6D;
             if (opacitySource == 1)
                 presenter.Opacity = opacity;
@@ -52,20 +62,20 @@ public class DeferredContentRevealLifecycleTests
             }
             Flush(window);
             int styleCount = presenter.Styles.Count;
+            // Capture the first rendered value even if the fade finishes before layout returns.
+            presenter.PropertyChanged += RecordOpacity;
 
             for (int visit = 0; visit < 3; visit++)
             {
+                opacityChanges.Clear();
                 host.Content = $"Visit {visit}";
                 Flush(window);
-                AvaloniaHeadlessPlatform.ForceRenderTimerTick();
-                double start = presenter.Opacity;
-                Assert.InRange(start, opacity * 0.85D, opacity * 0.98D);
                 Assert.Equal(opacity, presenter.GetBaseValue(Visual.OpacityProperty).GetValueOrDefault(1D));
-
-                await Task.Delay(30);
-                AvaloniaHeadlessPlatform.ForceRenderTimerTick();
-                Assert.InRange(presenter.Opacity, start, opacity);
                 await SettleAsync(window, presenter);
+                Assert.NotEmpty(opacityChanges);
+                Assert.InRange(opacityChanges[0], opacity * 0.85D, opacity * 0.98D);
+                for (int frame = 1; frame < opacityChanges.Count; frame++)
+                    Assert.InRange(opacityChanges[frame], opacityChanges[frame - 1], opacity);
                 Assert.Equal(opacity, presenter.Opacity);
                 Assert.Equal(styleCount, presenter.Styles.Count);
                 Assert.Null(presenter.Transitions);
@@ -73,6 +83,8 @@ public class DeferredContentRevealLifecycleTests
         }
         finally
         {
+            if (presenter is not null)
+                presenter.PropertyChanged -= RecordOpacity;
             binding?.Dispose();
             window.Close();
         }

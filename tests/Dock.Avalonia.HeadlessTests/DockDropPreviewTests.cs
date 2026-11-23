@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Headless;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -508,7 +509,7 @@ public class DockDropPreviewTests(ITestOutputHelper output)
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
             using var initial = window.CaptureRenderedFrame()!;
-            if (directory is not null) initial.Save(System.IO.Path.Combine(directory, name + "-initial.png"));
+            SaveProofFrame(initial, directory, name, "initial");
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
             if (resize)
             {
@@ -578,7 +579,7 @@ public class DockDropPreviewTests(ITestOutputHelper output)
             using var warmup = previewSurface.CaptureRenderedFrame();
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
             using var previewFrame = previewSurface.CaptureRenderedFrame()!;
-            if (directory is not null) previewFrame.Save(System.IO.Path.Combine(directory, name + "-preview.png"));
+            SaveProofFrame(previewFrame, directory, name, "preview");
             var color = Assert.IsAssignableFrom<ISolidColorBrush>(indicator.Background).Color;
             var rendered = RenderedColorBounds(previewFrame, color);
             // The headless backend deliberately returns identity screen transforms for
@@ -590,7 +591,7 @@ public class DockDropPreviewTests(ITestOutputHelper output)
             using var afterWarmup = window.CaptureRenderedFrame();
             global::Avalonia.Threading.Dispatcher.UIThread.RunJobs();
             using var dropFrame = window.CaptureRenderedFrame()!;
-            if (directory is not null) dropFrame.Save(System.IO.Path.Combine(directory, name + "-drop.png"));
+            SaveProofFrame(dropFrame, directory, name, "drop");
             var realized = Assert.IsAssignableFrom<Control>(factory.VisibleDockableControls[source.Owner!]);
             var actual = new Rect(realized.TranslatePoint(default, control)!.Value, realized.Bounds.Size);
             Assert.NotSame(originalOwner, source.Owner);
@@ -624,7 +625,22 @@ public class DockDropPreviewTests(ITestOutputHelper output)
         finally { window.Close(); Dock.Settings.DockSettings.GlobalDockingProportion = prior; Dock.Settings.DockSettings.UseFloatingDockAdorner = priorFloating; }
     }
 
-    private static Rect RenderedColorBounds(global::Avalonia.Media.Imaging.Bitmap frame, Color color)
+    private static void SaveProofFrame(Bitmap frame, string? directory, string name, string phase)
+    {
+        if (directory is null)
+        {
+            return;
+        }
+
+        var path = System.IO.Path.Combine(directory, $"{name}-{phase}.png");
+#if AVALONIA_11
+        frame.Save(path);
+#else
+        frame.Save(path, PngBitmapEncoderOptions.Default);
+#endif
+    }
+
+    private static Rect RenderedColorBounds(Bitmap frame, Color color)
     {
         var pixelSize = frame.PixelSize;
         var pixels = new byte[pixelSize.Width * pixelSize.Height * 4];

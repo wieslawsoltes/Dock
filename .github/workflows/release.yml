@@ -1,18 +1,13 @@
 name: Release
 
 permissions:
-  contents: write
-  packages: write
+  contents: read
 
 on:
   push:
     tags:
       - 'v*'
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag (e.g. v1.2.3) to release when manually triggered'
-        required: false
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -59,6 +54,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nuget-packages
+        if-no-files-found: error
         path: |
           artifacts/nuget/*.nupkg
           artifacts/nuget/*.snupkg
@@ -84,37 +80,33 @@ jobs:
         path: bundle/dock-packages.zip
 
   nuget_push:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
     runs-on: ubuntu-latest
     needs: artifacts
-    env:
-      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    environment: nuget
+    permissions:
+      id-token: write
     steps:
-    - name: Download release bundle
-      uses: actions/download-artifact@v4
+    - name: Download NuGet packages
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       with:
-        name: release-bundle
-        path: bundle
-    - name: Extract release bundle
+        name: nuget-packages
+        path: release
+    - name: Sign in to NuGet.org
+      id: nuget_login
+      uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+      with:
+        user: ${{ vars.NUGET_USER }}
+    - name: Push packages and symbols to NuGet.org
+      env:
+        NUGET_API_KEY: ${{ steps.nuget_login.outputs.NUGET_API_KEY }}
       run: |
-        mkdir -p nuget
-        zip_path=$(find bundle -name 'dock-packages.zip' -print -quit)
-        if [ -z "$zip_path" ]; then
-          echo "release bundle archive not found" >&2
-          exit 1
-        fi
-        unzip -o "$zip_path" -d nuget
-    - name: Push packages to NuGet
-      if: env.NUGET_API_KEY != ''
-      run: |
-        shopt -s nullglob
-        for package in nuget/*.nupkg nuget/*.snupkg; do
-          dotnet nuget push "$package" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
-        done
+        dotnet nuget push "release/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
+        dotnet nuget push "release/*.snupkg" --symbol-api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
   github_release:
     runs-on: ubuntu-latest
-    needs: artifacts
+    needs: nuget_push
     permissions:
       contents: write
     steps:
